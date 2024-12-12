@@ -1,24 +1,24 @@
 #include <iostream>
 #include <string>
-#include <iomanip>
 using namespace std;
 
-const int MaxStudent = 15;
+const int MaxStudent = 10;
 
-struct student {
+struct Student {
     int roll_no;
-    string name;
+    string name; // Keeping string
     float sgpa;
 };
 
 // 1. Input Function
-void input(student s[]) {
+void input(Student s[]) {
     for (int i = 0; i < MaxStudent; i++) {
         cout << "\nEnter the Roll number of the student: ";
         cin >> s[i].roll_no;
 
         cout << "Enter the Name of Roll No. " << s[i].roll_no << ": ";
-        cin >> s[i].name;
+        cin.ignore(); // To avoid newline issues after cin
+        getline(cin, s[i].name); // Use getline for reading full name
 
         cout << "Enter the SGPA of Roll No. " << s[i].roll_no << ": ";
         cin >> s[i].sgpa;
@@ -26,24 +26,27 @@ void input(student s[]) {
 }
 
 // 2. Display Function
-void display(student list[]) {
+void display(Student list[]) {
     cout << "\n---------------------------------------------------\n";
-    cout << left << setw(10) << "Sr.No."
-         << left << setw(10) << "Roll No."
-         << left << setw(25) << "Student Name"
-         << left << setw(15) << "SGPA" << endl;
+    cout << "Sr.No.  Roll No.   Student Name             SGPA\n";
     cout << "---------------------------------------------------\n";
 
     for (int i = 0; i < MaxStudent; i++) {
-        cout << left << setw(10) << i + 1
-             << left << setw(10) << list[i].roll_no
-             << left << setw(25) << list[i].name
-             << left << setw(15) << list[i].sgpa << endl;
+        // Manually format and align the output
+        cout << i + 1 << "       " 
+             << list[i].roll_no << "         " 
+             << list[i].name; 
+        
+        // Add spaces for alignment based on name length
+        int name_length = list[i].name.length();
+        for (int j = 0; j < 20 - name_length; j++) cout << " ";
+        
+        cout << list[i].sgpa << "\n";
     }
 }
 
 // 3. Bubble Sort
-void bubble_sort(student s[]) {
+void bubble_sort(Student s[]) {
     for (int k = 0; k < MaxStudent; k++) {
         for (int j = 0; j < MaxStudent - 1; j++) {
             if (s[j].roll_no > s[j + 1].roll_no) {
@@ -56,12 +59,12 @@ void bubble_sort(student s[]) {
 }
 
 // 4. Insertion Sort
-void insertion_sort(student s[]) {
+void insertion_sort(Student s[]) {
     for (int i = 1; i < MaxStudent; i++) {
-        student key = s[i];
+        Student key = s[i];
         int j = i - 1;
 
-        while (j >= 0 && s[j].name > key.name) {
+        while (j >= 0 && s[j].name > key.name) { // String comparison
             s[j + 1] = s[j];
             j--;
         }
@@ -72,10 +75,9 @@ void insertion_sort(student s[]) {
 }
 
 // 5. Quick Sort
-void quick_sort(student s[], int first, int last) {
+void quick_sort(Student s[], int first, int last) {
     if (first < last) {
         int p = first, i = first, j = last;
-        student temp;
 
         while (i < j) {
             while (s[i].sgpa >= s[p].sgpa && i < last) i++;
@@ -93,35 +95,37 @@ void quick_sort(student s[], int first, int last) {
 }
 
 // 6. Linear Search
-void search_sgpa(student list[]) {
+void search_sgpa(Student list[]) {
     float sgpa;
     cout << "\nEnter SGPA: ";
     cin >> sgpa;
 
     cout << "\n--------------------------------------------------------\n";
-    cout << left << setw(10) << "Sr.No."
-         << left << setw(10) << "Roll No."
-         << left << setw(25) << "Student Name"
-         << left << setw(15) << "SGPA" << endl;
+    cout << "Sr.No.  Roll No.   Student Name             SGPA\n";
     cout << "--------------------------------------------------------\n";
 
     for (int i = 0; i < MaxStudent; i++) {
         if (list[i].sgpa == sgpa) {
-            cout << left << setw(10) << i + 1
-                 << left << setw(10) << list[i].roll_no
-                 << left << setw(25) << list[i].name
-                 << left << setw(15) << list[i].sgpa << endl;
+            cout << i + 1 << "       " 
+                 << list[i].roll_no << "         " 
+                 << list[i].name;
+
+            int name_length = list[i].name.length();
+            for (int j = 0; j < 20 - name_length; j++) cout << " ";
+            
+            cout << list[i].sgpa << "\n";
         }
     }
 }
 
 // 7. Binary Search
-int binary_search(student s[]) {
+int binary_search(Student s[]) {
     insertion_sort(s);
 
     string key;
     cout << "\nEnter the Name you want to search: ";
-    cin >> key;
+    cin.ignore();
+    getline(cin, key);
 
     int low = 0, high = MaxStudent - 1;
     while (low <= high) {
@@ -139,24 +143,25 @@ int binary_search(student s[]) {
 }
 
 // 8. View Top Students
-void view(student list[], int count) {
+void view(Student list[], int count) {
     cout << "\n--------------------------------------------------------\n";
-    cout << left << setw(10) << "Sr.No."
-         << left << setw(10) << "Roll No."
-         << left << setw(25) << "Student Name"
-         << left << setw(15) << "SGPA" << endl;
+    cout << "Sr.No.  Roll No.   Student Name             SGPA\n";
     cout << "--------------------------------------------------------\n";
 
     for (int i = 0; i < count; i++) {
-        cout << left << setw(10) << i + 1
-             << left << setw(10) << list[i].roll_no
-             << left << setw(25) << list[i].name
-             << left << setw(15) << list[i].sgpa << endl;
+        cout << i + 1 << "       " 
+             << list[i].roll_no << "         " 
+             << list[i].name;
+
+        int name_length = list[i].name.length();
+        for (int j = 0; j < 20 - name_length; j++) cout << " ";
+        
+        cout << list[i].sgpa << "\n";
     }
 }
 
 int main() {
-    student s[MaxStudent];
+    Student s[MaxStudent];
     input(s);
     display(s);
 
@@ -208,19 +213,3 @@ int main() {
     cout << "Thank you!";
     return 0;
 }
-
-void selectionSort(int arr[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        int minIndex = i;
-        for (int j = i + 1; j < n; j++) {
-            if (arr[j] < arr[minIndex]) {
-                minIndex = j; // Find the index of the smallest element
-            }
-        }
-        // Swap the found minimum element with the first element
-        int temp = arr[minIndex];
-        arr[minIndex] = arr[i];
-        arr[i] = temp;
-    }
-}
-
