@@ -1,68 +1,37 @@
 #include <iostream>
 using namespace std;
 
-// Function to heapify a subtree rooted at index i
-void heapify(int arr[], int n, int i) {
-    int largest = i;  // Initialize largest as root
-    int left = 2 * i + 1;  // left child
-    int right = 2 * i + 2; // right child
-
-    // If left child is larger than root
-    if (left < n && arr[left] > arr[largest]) {
-        largest = left;
-    }
-
-    // If right child is larger than the largest so far
-    if (right < n && arr[right] > arr[largest]) {
-        largest = right;
-    }
-
-    // If largest is not root, swap and continue heapifying
+// Function to maintain max-heap property
+void MaxHeapify(int a[], int i, int n) {
+    int largest = i, left = 2 * i, right = 2 * i + 1;
+    if (left <= n && a[left] > a[largest]) largest = left;
+    if (right <= n && a[right] > a[largest]) largest = right;
     if (largest != i) {
-        swap(arr[i], arr[largest]);
-
-        // Recursively heapify the affected subtree
-        heapify(arr, n, largest);
+        swap(a[i], a[largest]);
+        MaxHeapify(a, largest, n);  // Recursively heapify
     }
 }
 
-// Function to perform heap sort
-void heapSort(int arr[], int n) {
-    // Build a max heap
-    for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(arr, n, i);
+// Heap sort function
+void HeapSort(int a[], int n) {
+    for (int i = n / 2; i >= 1; i--) MaxHeapify(a, i, n);  // Build max-heap
+    for (int i = n; i >= 2; i--) {
+        swap(a[1], a[i]);  // Move root to end
+        MaxHeapify(a, 1, i - 1);  // Heapify the reduced heap
     }
-
-    // One by one extract elements from the heap
-    for (int i = n - 1; i >= 1; i--) {
-        // Move current root to end
-        swap(arr[0], arr[i]);
-
-        // Call heapify on the reduced heap
-        heapify(arr, i, 0);
-    }
-}
-
-// Utility function to print an array
-void printArray(int arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
 }
 
 int main() {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr) / sizeof(arr[0]);
+    int n;
+    cout << "Enter number of elements: ";
+    cin >> n;
 
-    cout << "Unsorted array: ";
-    printArray(arr, n);
+    int arr[n + 1];  // 1-based index
+    for (int i = 1; i <= n; i++) cin >> arr[i];  // Input elements
 
-    // Perform heap sort
-    heapSort(arr, n);
+    HeapSort(arr, n);  // Sort the array
 
-    cout << "Sorted array: ";
-    printArray(arr, n);
+    for (int i = 1; i <= n; i++) cout << arr[i] << " ";  // Output sorted array
 
     return 0;
 }
