@@ -33,6 +33,13 @@ bool search(Node* root, int val) {
     return search(root->right, val);
 }
 
+Node* findMin(Node* root) {
+    while (root && root->left) {
+        root = root->left;
+    }
+    return root;
+}
+
 Node* deleteNode(Node* root, int val) {
     if (root == nullptr) {
         return root;
@@ -65,12 +72,7 @@ Node* deleteNode(Node* root, int val) {
     return root;  
 }
 
-Node* findMin(Node* root) {
-    while (root && root->left) {
-        root = root->left;
-    }
-    return root;
-}
+
 
 void preOrder(Node* root) {
     if (root != nullptr) {
